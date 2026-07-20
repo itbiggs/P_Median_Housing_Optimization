@@ -1,15 +1,14 @@
-**P-Median Optimization of Affordable Housing Developments in Cook County Based on Gentrification Risk**   
-Isaac Biggs
+# P-Median Optimization of Affordable Housing Developments in Cook County Based on Gentrification Risk 
 
-Project Statement  
+## Project Statement  
 As gentrification continues to plague Chicago and Cook County communities, low-income renters face higher risk of displacement from their communities as property sale prices increase and affordable housing disappears. This project addresses the challenge of properly allocating ten potential neighborhood locations for affordable housing centers that will minimize displacement of communities most likely to be gentrified, providing a blueprint to maximize the impact of affordable housing in Cook County.
 
-Background  
+## Background  
 Gentrification is when wealthier residents and businesses move into historically lower-income areas which drives up property values and rents. In recent decades, gentrification has become more common in urban centers across the United States. In particular, Chicago and surrounding Cook County have been a hotspot for this phenomenon. As of 2021, more than 200,000 low income Chicago households (18% of all low-income households) live in neighborhoods at risk of, or already experiencing, gentrification and displacement in particular in the southern and western parts of the city (Chapple et al.). A solution to alleviate the displacement of gentrification is affordable housing developments. One study showed that neighborhoods actively increasing housing stock (which includes affordable units) experienced fewer evictions because they can accommodate new residents without displacing existing ones (Hepburn et al.).  
 
 Due to the sheer size of Cook County, spanning hundreds of thousands of households, traditional site selection is not sufficient. Addressing the issue with affordable housing developments requires a spatial optimization approach that considers the areas in the highest need and the distance from the development to the resident's original neighborhood and community. This project utilizes a P-median optimization model to achieve this, ensuring that the ten proposing centers are located in optimal neighborhoods in order to help foster long-term community stability throughout Cook County.
 
-Methodology  
+## Methodology  
 For my data, I used two different sources. The first data came from the Cook County Assessor’s Office that includes all 216,550 property sales in Cook County from 2023-2025 (Cook County Data Catalog). Each sale includes data on the year, neighborhood, date, price, seller, buyer, and more. Alongside this CSV file, I used a GeoJSON file from the Cook County Assessor's Office that aligns with the property sale datasets neighborhood classification (Cook County Data Catalog). The other source of my data comes from the US Census Bureau’s American Community Survey (ACS). I utilized Cook County household tenure data that included the number of renters and owners in each census tract from 2024\. Additionally, I used 2024 median household income data by census tract as well (U.S. Census Bureau). I also worked with a census tract shapefile from the US Census Bureau to help visualize and classify the ACS data (U.S. Census Bureau). 
 
 Prior to performing any calculations on my data, I cleaned all of it. First, the property sales records were filtered to remove non-market transactions and any extreme outliers. Next, I removed any missing or null values in the ACS tract-level data to prevent any computation errors in the following steps. My last step was to standardize and project my spatial layers and data into the ESPG:3435 coordinate reference system to allow accurate spatial joins across the county.
@@ -22,18 +21,18 @@ With 836 neighborhoods prior to solving p-median, there were just too many nodes
 
 To identify the 10 optimal locations, I implemented a P-median model using the PuLP library in Python to minimize the total weighted distance between demand nodes and the new affordable housing sites. I defined weight as the aggregated vulnerability score of each demand zone calculated previously and distance as the linear distance in feet. I formulated the model as a linear program using binary decision variables to manage facility placement and the neighborhoods it would serve as affordable housing for those displaced. This approach ensured that the housing centers are strategically placed nearest clusters with higher vulnerability for gentrification, with the goal of minimizing community displacement as much as possible. 
 
-Results  
+## Results  
 The p-median model successfully reached a globally optimal solution of 10 facility zones out of the 200 demand zones. The solver achieved a final objective value of 2,244,032.83 (measured in weighted feet), representing the minimized total weight distance across the county. Below on the left is a look at all of Cook County and the chosen 10 locations along with what zones they are designed to help minimize the effects of displacement. On the right there is a closer look at the Southeast side of Cook County, where we see the highest gentrification vulnerability and hence the largest concentration of affordable housing site locations.
 
 The 10 affordable housing facilities are located in: Chicago Ridge, Rogers Park, Des Plaines, Chicago Heights, Calumet Park, Oak Park, Schaumburg, West Roseland, Englewood, and Dolton. The distribution of these locations demonstrates the high concentration in the South Side of Chicago and the South suburbs, as there are 5 concentrated in a small area. Other locations on the North, Northwest, and West sides of the county act as more spread out regional anchors as a result of much lower gentrification vulnerability risks, ensuring geographic coverage throughout the entire county despite lower vulnerability scores.
 
-Major Accomplishments
+## Major Accomplishments
 
 * Successfully integrated over 216,000 property sales records with ACS socioeconomic data at neighborhood and tract levels, allowing me to create a complex dataset capturing market pressure and gentrification vulnerability.  
 * Overcame the complexity of modeling such a large county with 836 assessor neighborhoods originally by utilizing K-Means clustering to group neighborhoods into demand zones.  
 * Successfully implemented a p-median optimization model using the PuLP library to identify 10 strategically placed affordable housing developments, providing a data driven blueprint for minimizing gentrification displacement in Cook County.
 
-References  
+## References  
 Chapple, Karen, et al. “Chicago \- Gentrification and Displacement.” Urban Displacement Project, 2021, [https://www.urbandisplacement.org/maps/chicago-gentrification-and-displacement/](https://www.urbandisplacement.org/maps/chicago-gentrification-and-displacement/). 
 
 Cook County Data Catalog. Assessor \- Neighborhood Boundaries. Cook County Government, 2024, [https://datacatalog.cookcountyil.gov/Property-Taxation/Assessor-Neighborhood-Boundaries/pcdw-pxtg/about\_data](https://datacatalog.cookcountyil.gov/Property-Taxation/Assessor-Neighborhood-Boundaries/pcdw-pxtg/about_data). Accessed 4 May 2026\. 
